@@ -1,8 +1,8 @@
 # Proyecto de Final IA
 
 **Valor:** 50 puntos
-**Fecha de entrega:** 12/03/2025
-**Fechas de presentación:** 14/03/2025 y 15/03/2025
+**Fecha de entrega:** 9/04/2025
+**Fechas de presentación:** 11/04/2025 y 12/04/2025
 
 ---
 
