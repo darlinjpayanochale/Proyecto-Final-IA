@@ -1,2 +1,7 @@
 # Proyecto-de-Final-IA
-Proyecto de Final IA
+
+## Nombre
+
+## Matrícula
+
+## Proyecto
