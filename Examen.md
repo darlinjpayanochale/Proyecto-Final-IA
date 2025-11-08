@@ -1,9 +1,9 @@
 
 # Proyecto Final de Inteligencia Artificial
 
-**Valor:** 40 puntos  
-**Fecha límite de entrega:** 11/08/2025  
-**Fecha de presentación oral:** 14/08/2025  
+**Valor:** 30 puntos  
+**Fecha límite de entrega:** 02/12/2025  
+**Fecha de presentación oral:** 05/12/2025  
 
 ---
 
@@ -17,7 +17,7 @@ La aplicación debe ser **interactiva y amigable**, permitiendo al usuario inter
 
 ## Evaluación
 
-El proyecto tendrá una valoración total de **40 puntos**, distribuidos en los siguientes criterios:
+El proyecto tendrá una valoración total de **30  puntos**, distribuidos en los siguientes criterios:
 
 ### 1. Desarrollo de la Aplicación con Modelos de Deep Learning
 
@@ -28,10 +28,7 @@ El proyecto tendrá una valoración total de **40 puntos**, distribuidos en los 
   Es obligatorio el uso de librerías como **Gradio** para crear una interfaz gráfica.  
   **No se aceptarán notebooks ni interfaces por línea de comandos;** su uso será penalizado.
 
-- **Claridad en la Presentación:**  
-  Durante la presentación, se evaluará la **claridad, profundidad y dominio del tema** al explicar el funcionamiento de la aplicación.
-
-> **Puntaje máximo total: 40 puntos**
+> **Puntaje máximo total: 30  puntos**
 
 ---
 
@@ -48,28 +45,11 @@ El proyecto tendrá una valoración total de **40 puntos**, distribuidos en los 
 - Se valorará la **originalidad** del enfoque y la solución propuesta.
 - El plagio o la apropiación de código sin la debida atribución implica **calificación 0** y posibles sanciones académicas.
 
-### Video de Presentación
+### Formato de entrega:
 
-Debe incluirse un video explicativo en formato **.mp4**, donde se detalle:
+- El proyecto debe subirse en un archivo de texto plano "Nombre-matricula.txt", que debe contener:  
+  - Su **nombre, matrícula y el enlace al repositorio de GitHub** y el enlace al **video**, que también debe estar en el repositorio.  
 
-- El problema abordado.
-- El funcionamiento de la aplicación.
-- El proceso de desarrollo.
-
-> Evite videos excesivamente largos o pesados (por ejemplo: 15 minutos en 4 GB).
-
----
-
-## Formato de Entrega
-
-La entrega deberá realizarse en un **archivo ZIP** que contenga:
-
-- Un **archivo de texto plano** con tu nombre, matrícula y enlace al repositorio de GitHub.
-- El video explicativo.
-- Todo el código y recursos necesarios para ejecutar el proyecto.
-
-> El nombre del archivo ZIP debe ser:  
-> `NombreApellido_Matrícula.zip`
 
 ---
 
