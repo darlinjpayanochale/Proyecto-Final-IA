@@ -20,12 +20,21 @@ frame_count = 0
 alarm_playing = False
 last_capture_time = 0
 
+danger_count = 0
+prev_detected = False
+fps = 0
+prev_time = time.time()
+
 while True:
     ret, frame = cap.read()
     if not ret:
         break
 
     frame_count += 1
+
+    current_time = time.time()
+    fps = 1 / (current_time - prev_time)
+    prev_time = current_time
 
     if frame_count % 3 == 0:
 
@@ -54,19 +63,13 @@ while True:
         annotated_frame = results[0].plot()
 
         if detected_danger:
+            if not prev_detected:
+                danger_count += 1
+            prev_detected = True
+
             if not alarm_playing:
                 pygame.mixer.music.play(-1)
                 alarm_playing = True
-
-            cv2.putText(
-                annotated_frame,
-                "PELIGRO DETECTADO",
-                (50, 50),
-                cv2.FONT_HERSHEY_SIMPLEX,
-                1,
-                (0, 0, 255),
-                3
-            )
 
             current_time = time.time()
 
@@ -77,9 +80,28 @@ while True:
                 last_capture_time = current_time
 
         else:
+            prev_detected = False
             if alarm_playing:
                 pygame.mixer.music.stop()
                 alarm_playing = False
+
+        if detected_danger:
+            color = (0, 0, 255)
+            estado = "PELIGRO"
+        else:
+            color = (0, 255, 0)
+            estado = "SEGURO"
+
+        cv2.rectangle(annotated_frame, (0, 0), (400, 100), (0, 0, 0), -1)
+
+        cv2.putText(annotated_frame, f"Estado: {estado}", (10, 30),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 2)
+
+        cv2.putText(annotated_frame, f"Eventos: {danger_count}", (10, 60),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+
+        cv2.putText(annotated_frame, f"FPS: {int(fps)}", (10, 90),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 0), 2)
 
         cv2.imshow("Detector IA", annotated_frame)
 
