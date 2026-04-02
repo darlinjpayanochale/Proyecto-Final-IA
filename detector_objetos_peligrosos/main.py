@@ -1,22 +1,24 @@
 from ultralytics import YOLO
 import cv2
 import pygame
+import os
+import time
 
-# Cargar modelo (puedes cambiar a yolov8m.pt si tu PC aguanta)
-model = YOLO("yolov8s.pt")
+model = YOLO("yolov8m.pt")
 
-# Cámara
 cap = cv2.VideoCapture(0)
 
-# Sonido
 pygame.mixer.init()
 pygame.mixer.music.load("assets/alarma.mp3")
 
-# Objetos peligrosos
 dangerous_objects = ["knife", "scissors", "fork"]
+
+if not os.path.exists("capturas"):
+    os.makedirs("capturas")
 
 frame_count = 0
 alarm_playing = False
+last_capture_time = 0
 
 while True:
     ret, frame = cap.read()
@@ -25,7 +27,6 @@ while True:
 
     frame_count += 1
 
-    # Procesar cada 3 frames para mejorar rendimiento
     if frame_count % 3 == 0:
 
         results = model(frame, imgsz=320, conf=0.25)
@@ -36,8 +37,6 @@ while True:
             for box in r.boxes:
 
                 conf = float(box.conf[0])
-
-                # Filtrar detecciones débiles
                 if conf < 0.5:
                     continue
 
@@ -46,17 +45,14 @@ while True:
 
                 print(f"Detectado: {label} ({conf:.2f})")
 
-                # Ignorar falsos positivos comunes
                 if label == "toothbrush":
                     continue
 
-                # Detectar peligro
                 if label in dangerous_objects:
                     detected_danger = True
 
         annotated_frame = results[0].plot()
 
-        # Alarma
         if detected_danger:
             if not alarm_playing:
                 pygame.mixer.music.play(-1)
@@ -72,6 +68,14 @@ while True:
                 3
             )
 
+            current_time = time.time()
+
+            if current_time - last_capture_time > 2:
+                filename = f"capturas/peligro_{int(current_time)}.jpg"
+                cv2.imwrite(filename, frame)
+                print("Imagen guardada:", filename)
+                last_capture_time = current_time
+
         else:
             if alarm_playing:
                 pygame.mixer.music.stop()
@@ -79,11 +83,9 @@ while True:
 
         cv2.imshow("Detector IA", annotated_frame)
 
-    # Salir con Q
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-# Cerrar todo
 cap.release()
 cv2.destroyAllWindows()
 pygame.mixer.quit()
