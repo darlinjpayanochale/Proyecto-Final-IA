@@ -92,10 +92,12 @@ while True:
             color = (0, 255, 0)
             estado = "SEGURO"
 
-        cv2.rectangle(annotated_frame, (0, 0), (400, 100), (0, 0, 0), -1)
+        cv2.putText(annotated_frame, f"Estado: {estado}", (10, 30),
+            cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,0), 2)
 
         cv2.putText(annotated_frame, f"Estado: {estado}", (10, 30),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 2)
+            cv2.FONT_HERSHEY_SIMPLEX, 1, color, 2)  
+        
 
         cv2.putText(annotated_frame, f"Eventos: {danger_count}", (10, 60),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
