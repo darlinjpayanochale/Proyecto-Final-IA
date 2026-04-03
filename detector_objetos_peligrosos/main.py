@@ -132,15 +132,15 @@ def menu_visual():
     cv2.setMouseCallback("Menu", mouse_event)
 
     while True:
-        screen = np.zeros((400, 600, 3), dtype=np.uint8)
+        screen = np.zeros((600, 900, 3), dtype=np.uint8)
 
-        cv2.putText(screen, "DETECTOR IA", (150, 80),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255, 255, 255), 2)
+        cv2.putText(screen, "DETECTOR IA", (280, 120),
+            cv2.FONT_HERSHEY_SIMPLEX, 1.5, (255, 255, 255), 3)
 
         botones = [
-            ("CAMARA", (180, 140, 240, 50)),
-            ("IMAGEN", (180, 210, 240, 50)),
-            ("SALIR", (180, 280, 240, 50))
+            ("CAMARA", (330, 220, 240, 60)),
+            ("IMAGEN", (330, 310, 240, 60)),
+            ("SALIR", (330, 400, 240, 60))
         ]
 
         for text, (x, y, w, h) in botones:
