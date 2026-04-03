@@ -115,7 +115,6 @@ def detector_camara():
 
     cap.release()
     cv2.destroyAllWindows()
-    pygame.mixer.quit()
 
 
 def menu_visual():
@@ -255,6 +254,5 @@ def detector_imagen():
             break
 
     cv2.destroyAllWindows()
-    pygame.mixer.quit()
 
 menu_visual()
