@@ -99,11 +99,14 @@ def detector_camara():
 
             cv2.putText(annotated_frame, f"FPS: {int(fps)}", (10, 100),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 0), 2)
+            
+            cv2.putText(annotated_frame, f"ESC: Salir", (10, 135),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 0), 2)
 
             cv2.imshow("Detector IA", annotated_frame)
 
         key = cv2.waitKey(1) & 0xFF
-        if key == ord('q'):
+        if key == 27:
             break
 
     cap.release()
@@ -124,7 +127,7 @@ def menu_visual():
         cv2.putText(screen, "2 - Modo imagen (proximamente)", (120, 230),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.7, (200, 200, 200), 2)
 
-        cv2.putText(screen, "Q - Salir", (120, 280),
+        cv2.putText(screen, "ESC - Salir", (120, 280),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.7, (200, 200, 200), 2)
 
         cv2.imshow("Menu", screen)
@@ -134,7 +137,7 @@ def menu_visual():
         if key == ord('1'):
             cv2.destroyAllWindows()
             detector_camara()
-        elif key == ord('q'):
+        elif key == 27:
             break
 
     cv2.destroyAllWindows()
