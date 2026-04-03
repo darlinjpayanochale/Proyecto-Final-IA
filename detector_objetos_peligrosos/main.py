@@ -79,7 +79,7 @@ def detector_camara():
 
                 if current_time - last_capture_time > 2:
                     filename = f"capturas/peligro_{int(current_time)}.jpg"
-                    cv2.imwrite(filename, frame)
+                    cv2.imwrite(filename, annotated_frame)
                     last_capture_time = current_time
 
             else:
