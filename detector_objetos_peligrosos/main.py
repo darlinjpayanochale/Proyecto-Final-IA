@@ -137,10 +137,81 @@ def menu_visual():
         if key == ord('1'):
             cv2.destroyAllWindows()
             detector_camara()
+
+        elif key == ord('2'):
+            cv2.destroyAllWindows()
+            detector_imagen()
+
         elif key == 27:
             break
 
     cv2.destroyAllWindows()
 
+
+def detector_imagen():
+    model = YOLO("yolov8m.pt")
+
+    ruta = input("Ruta de la imagen: ")
+
+    if not os.path.exists(ruta):
+        print("Imagen no encontrada")
+        return
+
+    frame = cv2.imread(ruta)
+
+    pygame.mixer.init()
+    pygame.mixer.music.load("assets/alarma.mp3")
+
+    dangerous_objects = ["knife", "scissors", "fork"]
+
+    results = model(frame, imgsz=640, conf=0.25)
+
+    detected_danger = False
+
+    for r in results:
+        for box in r.boxes:
+
+            conf = float(box.conf[0])
+            if conf < 0.5:
+                continue
+
+            cls = int(box.cls[0])
+            label = model.names[cls]
+
+            if label == "toothbrush":
+                continue
+
+            if label in dangerous_objects:
+                detected_danger = True
+
+    annotated_frame = results[0].plot()
+
+    if detected_danger:
+        pygame.mixer.music.play()
+        estado = "PELIGRO"
+        color = (0, 0, 255)
+    else:
+        estado = "SEGURO"
+        color = (0, 255, 0)
+
+    cv2.putText(annotated_frame, f"Estado: {estado}", (10, 40),
+                cv2.FONT_HERSHEY_SIMPLEX, 1, color, 2)
+
+    if not os.path.exists("capturas"):
+        os.makedirs("capturas")
+
+    filename = f"capturas/resultado_{int(time.time())}.jpg"
+    cv2.imwrite(filename, annotated_frame)
+    print("Resultado guardado en:", filename)
+
+    while True:
+        cv2.imshow("Resultado Imagen", annotated_frame)
+
+        key = cv2.waitKey(1) & 0xFF
+        if key == 27:
+            break
+
+    cv2.destroyAllWindows()
+    pygame.mixer.quit()
 
 menu_visual()
