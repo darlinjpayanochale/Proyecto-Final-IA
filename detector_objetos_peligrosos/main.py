@@ -22,6 +22,7 @@ def detector_camara():
     if not os.path.exists("capturas"):
         os.makedirs("capturas")
 
+    frame_counter = 0
     frame_count = 0
     alarm_playing = False
     last_capture_time = 0
@@ -29,6 +30,7 @@ def detector_camara():
     danger_count = 0
     prev_detected = False
     fps = 0
+    fps_time = time.time()
     prev_time = time.time()
 
     while True:
@@ -36,11 +38,13 @@ def detector_camara():
         if not ret:
             break
 
-        frame_count += 1
+        frame_counter += 1
 
         current_time = time.time()
-        fps = 1 / (current_time - prev_time)
-        prev_time = current_time
+        if time.time() - fps_time >= 1:
+            fps = frame_counter
+            frame_counter = 0
+            fps_time = time.time()
 
         if frame_count % 3 == 0:
 
