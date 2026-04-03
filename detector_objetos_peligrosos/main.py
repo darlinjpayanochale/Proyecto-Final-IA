@@ -1,4 +1,5 @@
 from ultralytics import YOLO
+from tkinter import Tk, filedialog
 import cv2
 import pygame
 import os
@@ -151,7 +152,9 @@ def menu_visual():
 def detector_imagen():
     model = YOLO("yolov8m.pt")
 
-    ruta = input("Ruta de la imagen: ")
+    root = Tk()
+    root.withdraw()
+    ruta = filedialog.askopenfilename()
 
     if not os.path.exists(ruta):
         print("Imagen no encontrada")
