@@ -6,6 +6,9 @@ import os
 import time
 import numpy as np
 
+pygame.mixer.init()
+click_sound = pygame.mixer.Sound("assets/click.mp3")
+
 def detector_camara():
     model = YOLO("yolov8m.pt")
 
@@ -116,34 +119,57 @@ def detector_camara():
 
 
 def menu_visual():
+    click = False
+    mx, my = 0, 0
+
+    def mouse_event(event, x, y, flags, param):
+        nonlocal mx, my, click
+        mx, my = x, y
+        if event == cv2.EVENT_LBUTTONDOWN:
+            click = True
+
+    cv2.namedWindow("Menu")
+    cv2.setMouseCallback("Menu", mouse_event)
+
     while True:
         screen = np.zeros((400, 600, 3), dtype=np.uint8)
 
         cv2.putText(screen, "DETECTOR IA", (150, 80),
                     cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255, 255, 255), 2)
 
-        cv2.putText(screen, "1 - Camara en tiempo real", (120, 180),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (200, 200, 200), 2)
+        botones = [
+            ("CAMARA", (180, 140, 240, 50)),
+            ("IMAGEN", (180, 210, 240, 50)),
+            ("SALIR", (180, 280, 240, 50))
+        ]
 
-        cv2.putText(screen, "2 - Modo imagen (proximamente)", (120, 230),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (200, 200, 200), 2)
+        for text, (x, y, w, h) in botones:
+            hover = x < mx < x+w and y < my < y+h
+            color = (70, 70, 70) if not hover else (150, 150, 150)
 
-        cv2.putText(screen, "ESC - Salir", (120, 280),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (200, 200, 200), 2)
+            cv2.rectangle(screen, (x, y), (x+w, y+h), color, -1)
+            cv2.putText(screen, text, (x+40, y+32),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
+
+            if hover and click:
+                click = False
+                click_sound.play()
+                cv2.destroyAllWindows()
+
+                if text == "CAMARA":
+                    detector_camara()
+                elif text == "IMAGEN":
+                    detector_imagen()
+                elif text == "SALIR":
+                    return
+
+                cv2.namedWindow("Menu")
+                cv2.setMouseCallback("Menu", mouse_event)
 
         cv2.imshow("Menu", screen)
 
         key = cv2.waitKey(1) & 0xFF
-
-        if key == ord('1'):
-            cv2.destroyAllWindows()
-            detector_camara()
-
-        elif key == ord('2'):
-            cv2.destroyAllWindows()
-            detector_imagen()
-
-        elif key == 27:
+        if key == 27:
             break
 
     cv2.destroyAllWindows()
