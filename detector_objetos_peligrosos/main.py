@@ -132,24 +132,38 @@ def menu_visual():
     cv2.setMouseCallback("Menu", mouse_event)
 
     while True:
-        screen = np.zeros((600, 900, 3), dtype=np.uint8)
+        screen = np.zeros((560, 900, 3), dtype=np.uint8)
 
-        cv2.putText(screen, "DETECTOR IA", (280, 120),
-            cv2.FONT_HERSHEY_SIMPLEX, 1.5, (255, 255, 255), 3)
+        for i in range(screen.shape[0]):
+            color = int(20 + (i / screen.shape[0]) * 60)
+            screen[i, :] = (color, color, color + 20)
+
+        cv2.putText(screen, "DETECTOR IA", (260, 100),
+            cv2.FONT_HERSHEY_SIMPLEX, 1.6, (255, 255, 255), 3)
+
+        cv2.putText(screen, "Sistema de deteccion de objetos peligrosos.", (280, 140),
+            cv2.FONT_HERSHEY_SIMPLEX, 0.6, (200, 200, 200), 1)
 
         botones = [
-            ("CAMARA", (330, 220, 240, 60)),
-            ("IMAGEN", (330, 310, 240, 60)),
-            ("SALIR", (330, 400, 240, 60))
+            ("CAMARA", (300, 220, 300, 60)),
+            ("IMAGEN", (300, 310, 300, 60)),
+            ("SALIR", (300, 400, 300, 60))
         ]
-
         for text, (x, y, w, h) in botones:
             hover = x < mx < x+w and y < my < y+h
-            color = (70, 70, 70) if not hover else (150, 150, 150)
+
+            color = (50, 50, 50) if not hover else (90, 90, 90)
 
             cv2.rectangle(screen, (x, y), (x+w, y+h), color, -1)
-            cv2.putText(screen, text, (x+40, y+32),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
+
+            cv2.rectangle(screen, (x, y), (x+w, y+h), (120, 120, 120), 2)
+
+            text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)[0]
+            text_x = x + (w - text_size[0]) // 2
+            text_y = y + (h + text_size[1]) // 2
+
+            cv2.putText(screen, text, (text_x, text_y),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 
             if hover and click:
                 click = False
